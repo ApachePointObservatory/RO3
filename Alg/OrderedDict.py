@@ -49,7 +49,7 @@ class OrderedDict(dict):
         self.__keyList = []
         if seqOrDict is None:
             return
-        elif hasattr(seqOrDict, "iteritems"):
+        elif hasattr(seqOrDict, "items"):
             for key, val in seqOrDict.items():
                 self[key] = val
         else:
