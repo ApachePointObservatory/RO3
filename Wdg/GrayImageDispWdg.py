@@ -1129,7 +1129,7 @@ class GrayImageWdg(tkinter.Frame, RO.AddCallback.BaseMixin):
             self.scaledIm  = Image.frombuffer(
                 "F",
                 theTuple,
-                self.scaledArr[self.begIJ[0]:self.endIJ[0], self.begIJ[1]:self.endIJ[1]].tostring(),
+                self.scaledArr[self.begIJ[0]:self.endIJ[0], self.begIJ[1]:self.endIJ[1]].tobytes(),
                 "raw",
                 "F",
                 0,
@@ -1144,7 +1144,7 @@ class GrayImageWdg(tkinter.Frame, RO.AddCallback.BaseMixin):
                 self.scaledMask = Image.frombuffer(
                     "L",
                     theTuple,
-                    self.mask[self.begIJ[0]:self.endIJ[0], self.begIJ[1]:self.endIJ[1]].tostring(),
+                    self.mask[self.begIJ[0]:self.endIJ[0], self.begIJ[1]:self.endIJ[1]].tobytes(),
                     "raw",
                     "L",
                     0,
