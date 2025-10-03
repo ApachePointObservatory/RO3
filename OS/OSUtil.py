@@ -212,17 +212,14 @@ def getResourceDir(pkg, *args):
     # hack for pyinstaller 1.3
     sys.executable = os.path.abspath(sys.executable)
     """
-    sysFrozen = getattr(sys, "frozen", None)
-    if sysFrozen == 1:
-        # handle pyinstaller; pkg.__file__ is dead wrong
-        pkgRoot = os.path.dirname(sys.executable)
+    if getattr(sys, 'frozen', False) and hasattr(sys, '_MEIPASS'):
+        pkgRoot = sys._MEIPASS #os.path.dirname(sys.executable)
         if not os.path.isdir(pkgRoot):
             raise RuntimeError(
-"""You are using pyinstaller and
-    sys.executable=%r
+f"""You are using pyinstaller and
+    {sys._MEIPASS=}
 cannot be found. To fix this please put:
-    sys.executable = os.path.abspath(sys.executable)
-at the beginning of your code.""" % (sys.executable,)
+    {sys._MEIPASS} inside {os.path.dirname(sys.executable)}."""
 )
     else:
         pkgRoot = os.path.dirname(os.path.dirname(pkg.__file__))
