@@ -75,8 +75,8 @@ Requirements:
 
 * Windows Requirements
 - Mark Hammond's pywin32 package: <http://sourceforge.net/projects/pywin32/>
-- ds9 must be installed in the default directory (C:\Program Files\ds9\ on English systems)
-- xpa executables must be installed in the default directory (C:\Program Files\xpa\)
+- ds9 must be installed in the default directory (C:\\Program Files\ds9\ on English systems)
+- xpa executables must be installed in the default directory (C:\\Program Files\xpa\)
   or in the same directory as ds9.exe. Why might you choose the latter?
   Because (at least for ds9 3.0.3) to use ds9 with xpa from the command line,
   the xpa executables should be the same diretory as ds9.exe. Otherwise ds9 can't find
@@ -157,7 +157,7 @@ import warnings
 import RO.OS
 import subprocess
 
-_DebugSetup = True
+_DebugSetup = False 
 
 def _addToPATH(newPath):
     """Add newPath to the PATH environment variable.
@@ -634,8 +634,6 @@ class DS9Win:
         
         self.xpaset(
             cmd = "array [%s]" % (_formatOptions(arryDict),),
-            #dataFunc = arr.tofile,
-            #fix for python3
             dataFunc = lambda f: f.write(arr.tobytes()) ,
         )
         
@@ -729,7 +727,6 @@ class DS9Win:
         Raises RuntimeError if anything is written to stdout or stderr.
         """
         if data is not None: 
-            #fix python3
             data=data.encode()
         
         return xpaset(
