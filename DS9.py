@@ -75,8 +75,8 @@ Requirements:
 
 * Windows Requirements
 - Mark Hammond's pywin32 package: <http://sourceforge.net/projects/pywin32/>
-- ds9 must be installed in the default directory (C:\Program Files\ds9\ on English systems)
-- xpa executables must be installed in the default directory (C:\Program Files\xpa\)
+- ds9 must be installed in the default directory (C:\\Program Files\ds9\ on English systems)
+- xpa executables must be installed in the default directory (C:\\Program Files\xpa\)
   or in the same directory as ds9.exe. Why might you choose the latter?
   Because (at least for ds9 3.0.3) to use ds9 with xpa from the command line,
   the xpa executables should be the same diretory as ds9.exe. Otherwise ds9 can't find
@@ -157,7 +157,7 @@ import warnings
 import RO.OS
 import subprocess
 
-_DebugSetup = False
+_DebugSetup = False 
 
 def _addToPATH(newPath):
     """Add newPath to the PATH environment variable.
@@ -440,8 +440,8 @@ def xpaset(cmd, data=None, dataFunc=None, template=_DefTemplate, doRaise = False
             dataFunc(p.stdin)
         elif data:
             p.stdin.write(data)
-            if data[-1] != "\n":
-                p.stdin.write("\n")
+            if data[-1] != b"\n":
+                p.stdin.write(b"\n")
         p.stdin.close()
         reply = p.stdout.read()
         if reply:
@@ -510,7 +510,6 @@ def _splitDict(inDict, keys):
         if key in inDict:
             outDict[key] = inDict.pop(key)
     return outDict  
-
 
 class DS9Win:
     """An object that talks to a particular window on ds9
@@ -632,13 +631,14 @@ class DS9Win:
             arryDict["arch"] = "bigendian"
         else:
             arryDict["arch"] = "littleendian"
-            
+        
         self.xpaset(
             cmd = "array [%s]" % (_formatOptions(arryDict),),
-            dataFunc = arr.tofile,
+            dataFunc = lambda f: f.write(arr.tobytes()) ,
         )
         
         for keyValue in kargs.items():
+            
             self.xpaset(cmd=" ".join(keyValue))
 
 # showBinFile is commented out because it is broken with ds9 3.0.3
@@ -726,6 +726,9 @@ class DS9Win:
         
         Raises RuntimeError if anything is written to stdout or stderr.
         """
+        if data is not None: 
+            data=data.encode()
+        
         return xpaset(
             cmd = cmd,
             data = data,
